@@ -86,7 +86,7 @@ def _show_points_distribution_birds_eye(coordinates_dataframe: pd.DataFrame, roa
 
 
 def _show_images_in_3d(dataframe: pd.DataFrame, n_samples: int, dataset_path: str):
-    camera_matrix, _ = read_camera_intrinsic(dataset_path)
+    _, camera_matrix, _ = read_camera_intrinsic(dataset_path)
     image_ids = list(dataframe['ImageId'])
     prediction_strings = list(dataframe['PredictionString'])
     for index in range(n_samples):

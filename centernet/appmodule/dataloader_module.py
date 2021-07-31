@@ -22,15 +22,15 @@ def data_loader_module(dataset_path: str):
     sample_image_ids = list(sample_dataset['ImageId'])
     sample_prediction_strings = list(sample_dataset['PredictionString'])
     for index in range(n_samples):
+        sample_image_id = sample_image_ids[index]
+        sample_image = np.array(Image.open(
+            os.path.join(dataset_path, 'train_images/{}.jpg'.format(sample_image_id))
+        ))
+        sample_mask, sample_regression_target = preprocessor.get_targets(
+            sample_image, sample_prediction_strings[index], flip=False
+        )
         with st.beta_expander(
-                label='Sample Train Images and Labels', expanded=True):
-            sample_image_id = sample_image_ids[index]
-            sample_image = np.array(Image.open(
-                os.path.join(dataset_path, 'train_images/{}.jpg'.format(sample_image_id))
-            ))
-            sample_mask, sample_regression_target = preprocessor.get_targets(
-                sample_image, sample_prediction_strings[index], flip=False
-            )
+                label='Sample Train Images and Labels: {} '.format(sample_image_id), expanded=True):
             plt.figure(figsize=(18, 18))
             plt.imshow(preprocessor.preprocess_image(image=sample_image, flip=False))
             plt.title(sample_image_id)
@@ -46,4 +46,3 @@ def data_loader_module(dataset_path: str):
             plt.title(sample_image_id + '_regression_targets')
             plt.axis('off')
             st.pyplot(plt)
-            st.markdown('<hr>', unsafe_allow_html=True)
