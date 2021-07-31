@@ -7,7 +7,6 @@ from PIL import Image
 import streamlit as st
 from matplotlib import pyplot as plt
 
-from .commons import add_heading
 from ..commons import (
     get_coordinates_dataframe, get_image_coordinates,
     visualize_in_3d, string_to_coordinates, read_camera_intrinsic
@@ -117,10 +116,6 @@ def _show_images_in_3d(dataframe: pd.DataFrame, n_samples: int, dataset_path: st
 
 
 def explore_dataset(dataset_path: str):
-    add_heading(
-        content='Peking University/Baidu - Autonomous Driving Dataset',
-        heading_level=1, align_center=True, add_hr=True
-    )
     train_dataframe = pd.read_csv(os.path.join(dataset_path, 'train.csv'))
     coordinates_dataframe = get_coordinates_dataframe(dataframe=train_dataframe)
     with st.beta_expander(label='Train Dataframe', expanded=False):
