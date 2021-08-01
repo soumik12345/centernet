@@ -7,6 +7,7 @@ from PIL import Image
 import streamlit as st
 from matplotlib import pyplot as plt
 
+from .commons import plot_image_matplotlib
 from ..commons import (
     get_coordinates_dataframe, get_image_coordinates,
     visualize_in_3d, string_to_coordinates, read_camera_intrinsic
@@ -26,21 +27,12 @@ def _show_car_coordinates(
             )
         )
         with col1:
-            plt.figure(figsize=(18, 18))
-            plt.imshow(image)
-            plt.title(image_ids[index])
-            plt.axis('off')
-            st.pyplot(plt)
+            plot_image_matplotlib(image=image, title=image_ids[index])
         x, y, _ = get_image_coordinates(
             prediction_strings[index], dataset_path=dataset_path
         )
         with col2:
-            plt.figure(figsize=(14, 14))
-            plt.imshow(image)
-            plt.scatter(x, y, color='red', s=100)
-            plt.title(image_ids[index] + '_labelled')
-            plt.axis('off')
-            st.pyplot(plt)
+            plot_image_matplotlib(image=image, title=image_ids[index] + '_labelled')
 
 
 def _show_points_distribution(
@@ -102,17 +94,10 @@ def _show_images_in_3d(dataframe: pd.DataFrame, n_samples: int, dataset_path: st
             camera_matrix=camera_matrix
         )
         with col1:
-            plt.figure(figsize=(18, 18))
-            plt.imshow(image)
-            plt.title(image_ids[index])
-            plt.axis('off')
-            st.pyplot(plt)
+            plot_image_matplotlib(image=image, title=image_ids[index])
         with col2:
-            plt.figure(figsize=(18, 18))
-            plt.imshow(annotated_image)
-            plt.title(image_ids[index] + '_annotated')
-            plt.axis('off')
-            st.pyplot(plt)
+            plot_image_matplotlib(
+                image=annotated_image, title=image_ids[index] + '_annotated')
 
 
 def explore_dataset(dataset_path: str):

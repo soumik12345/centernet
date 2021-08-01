@@ -24,3 +24,15 @@ def preprocess_regression_targets(coordinate, flip: bool = False):
 
 def project_to_2d(x, y, z, fx: float, fy: float, cx: float, cy: float):
     return x * fx / z + cx, y * fy / z + cy
+
+
+def post_process_regression(regression_dict):
+    for name in ['x', 'y', 'z']:
+        regression_dict[name] = regression_dict[name] * 100
+    regression_dict['roll'] = rotate(regression_dict['roll'], -np.pi)
+    pitch_sin = regression_dict['pitch_sin'] \
+                / np.sqrt(regression_dict['pitch_sin'] ** 2 + regression_dict['pitch_cos'] ** 2)
+    pitch_cos = regression_dict['pitch_cos'] \
+                / np.sqrt(regression_dict['pitch_sin'] ** 2 + regression_dict['pitch_cos'] ** 2)
+    regression_dict['pitch'] = np.arccos(pitch_cos) * np.sign(pitch_sin)
+    return regression_dict

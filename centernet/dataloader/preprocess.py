@@ -27,7 +27,6 @@ class Preprocessor:
             self.image_height // self.model_scale,
             self.image_width // self.model_scale], dtype='float32'
         )
-        coordinate_dataframe_fields = ['x', 'y', 'z', 'yaw', 'pitch', 'roll']
         regression_targets = np.zeros([
             self.image_height // self.model_scale,
             self.image_width // self.model_scale, 7], dtype='float32'

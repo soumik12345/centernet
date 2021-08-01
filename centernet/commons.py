@@ -10,7 +10,7 @@ import pandas as pd
 def read_camera_intrinsic(data_path) -> Tuple[Tuple[float, float, float, float], np.array, np.array]:
     camera_file = open(os.path.join(data_path, 'camera/camera_intrinsic.txt'), 'r')
     camera_file_lines = camera_file.readlines()
-    fx, fy, cx, cy = [line.split('=')[-1].strip()[:-1] for line in camera_file_lines]
+    fx, fy, cx, cy = [float(line.split('=')[-1].strip()[:-1]) for line in camera_file_lines]
     camera_matrix = np.array([[fx, 0, cx], [0, fy, cy], [0, 0, 1]], dtype=np.float32)
     camera_matrix_inverse = np.linalg.inv(camera_matrix)
     return (fx, fy, cx, cy), camera_matrix, camera_matrix_inverse
