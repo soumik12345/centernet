@@ -48,6 +48,7 @@ class Optimizer:
         return max(0.2, (x - self.r) ** 2 + (y - self.c) ** 2) + max(0.4, slope_err)
 
     def optimize(self, r, c, x0, y0, z0):
+        self.r, self.c = r, c
         result = minimize(
             self.distance_function,
             np.array([x0, y0, z0]), method='Powell'
