@@ -20,3 +20,7 @@ def preprocess_regression_targets(coordinate, flip: bool = False):
     coordinate.pop('pitch')
     coordinate.pop('id')
     return coordinate
+
+
+def project_to_2d(x, y, z, fx: float, fy: float, cx: float, cy: float):
+    return x * fx / z + cx, y * fy / z + cy
