@@ -18,7 +18,7 @@ on:
       - tests.py
       - requirements.txt
 jobs:
-  build-using-cmake-on-linux:
+  test-on-linux:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -29,4 +29,4 @@ jobs:
           wget https://github.com/soumik12345/centernet/releases/download/0.1/pku-autonomous-driving.zip
           unzip -q pku-autonomous-driving.zip
           rm pku-autonomous-driving.zip && cd ..
-          pytest tests.py -s
+          pytest tests.py --disable-pytest-warnings
