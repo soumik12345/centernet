@@ -51,20 +51,34 @@ class TestPreProcessor(TestCase):
             dataset_path='./data/pku-autonomous-driving/',
             image_height=320, image_width=1024, model_scale=8
         )
-        sample_dataset = train_dataframe.sample(n=1)
-        sample_image_id = list(sample_dataset['ImageId'])[0]
-        sample_prediction_string = list(sample_dataset['PredictionString'])[0]
-        sample_image = np.array(Image.open(
-            './data/pku-autonomous-driving/train_images/{}.jpg'.format(sample_image_id)))
-        preprocessed_image = preprocessor.preprocess_image(sample_image, flip=False)
-        self.assertTrue(preprocessed_image.shape == (320, 1024, 3))
-        preprocessed_image = preprocessor.preprocess_image(sample_image, flip=True)
-        self.assertTrue(preprocessed_image.shape == (320, 1024, 3))
-        mask, regression_target = preprocessor.get_targets(
-            sample_image, sample_prediction_string, flip=False)
-        self.assertTrue(mask.shape == (40, 128))
-        self.assertTrue(regression_target.shape == (40, 128, 7))
-        mask, regression_target = preprocessor.get_targets(
-            sample_image, sample_prediction_string, flip=True)
-        self.assertTrue(mask.shape == (40, 128))
-        self.assertTrue(regression_target.shape == (40, 128, 7))
+        for _ in range(50):
+            sample_dataset = train_dataframe.sample(n=1)
+            sample_image_id = list(sample_dataset['ImageId'])[0]
+            sample_prediction_string = list(sample_dataset['PredictionString'])[0]
+            sample_image = np.array(Image.open(
+                './data/pku-autonomous-driving/train_images/{}.jpg'.format(sample_image_id)))
+            preprocessed_image = preprocessor.preprocess_image(sample_image, flip=False)
+            self.assertTrue(preprocessed_image.shape == (320, 1024, 3))
+            preprocessed_image = preprocessor.preprocess_image(sample_image, flip=True)
+            self.assertTrue(preprocessed_image.shape == (320, 1024, 3))
+    
+    def test_shape_label(self):
+        train_dataframe = pd.read_csv('./data/pku-autonomous-driving/train.csv')
+        preprocessor = Preprocessor(
+            dataset_path='./data/pku-autonomous-driving/',
+            image_height=320, image_width=1024, model_scale=8
+        )
+        for _ in range(50):
+            sample_dataset = train_dataframe.sample(n=1)
+            sample_image_id = list(sample_dataset['ImageId'])[0]
+            sample_prediction_string = list(sample_dataset['PredictionString'])[0]
+            sample_image = np.array(Image.open(
+                './data/pku-autonomous-driving/train_images/{}.jpg'.format(sample_image_id)))
+            mask, regression_target = preprocessor.get_targets(
+                sample_image, sample_prediction_string, flip=False)
+            self.assertTrue(mask.shape == (40, 128))
+            self.assertTrue(regression_target.shape == (40, 128, 7))
+            mask, regression_target = preprocessor.get_targets(
+                sample_image, sample_prediction_string, flip=True)
+            self.assertTrue(mask.shape == (40, 128))
+            self.assertTrue(regression_target.shape == (40, 128, 7))
