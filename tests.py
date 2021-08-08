@@ -43,7 +43,7 @@ class TestDataset(TestCase):
         self.assertTrue('PredictionString' in train_dataframe)
 
 
-class TestPreprocessor(TestCase):
+class TestPreProcessor(TestCase):
 
     def test_shapes(self):
         train_dataframe = pd.read_csv('./data/pku-autonomous-driving/train.csv')

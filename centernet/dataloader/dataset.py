@@ -35,11 +35,9 @@ class PKUDataset(Dataset):
         flip = np.random.randint(10) == 1 if self.is_training else False
         original_image = np.array(Image.open(image_file))
         image = self.preprocessor.preprocess_image(image=original_image, flip=flip)
-        print(image.shape)
         image = np.rollaxis(image, 2, 0)
         mask, regression_targets = self.preprocessor.get_targets(
             image=original_image, labels=labels, flip=flip
         )
-        print(mask.shape, regression_targets.shape)
         regression_targets = np.rollaxis(regression_targets, 2, 0)
         return image, mask, regression_targets
