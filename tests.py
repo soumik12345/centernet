@@ -21,12 +21,8 @@ class TestDataset(TestCase):
             len(glob('./data/pku-autonomous-driving/car_models_json/*.json')) > 0)
     
     def test_images(self):
-        n_test_images = len(glob('./data/pku-autonomous-driving/test_images/*.jpg'))
         n_train_images = len(glob('./data/pku-autonomous-driving/train_images/*.jpg'))
-        n_train_masks = len(glob('./data/pku-autonomous-driving/train_masks/*.jpg'))
-        self.assertTrue(n_test_images > 0)
         self.assertTrue(n_train_images > 0)
-        self.assertTrue(n_train_masks > 0)
     
     def test_csv(self):
         self.assertTrue(
