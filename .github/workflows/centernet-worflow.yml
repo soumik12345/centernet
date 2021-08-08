@@ -20,4 +20,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - run: sh install.sh && sh download_data.sh && source venv/bin/activate && pytest tests.py -s
+      - run: 
+        - sh install.sh
+        - pip install gdown pytest
+        - sh download_data.sh
+        - source venv/bin/activate
+        - pytest tests.py -s
