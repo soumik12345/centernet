@@ -1,5 +1,7 @@
 # CenterNet
 
+<img src="https://github.com/soumik12345/centernet/workflows/centernet-badge/badge.svg" alt="build-failing">
+
 ## Instructions for Running the CenterNet App
 
 1. Clone the repository.
