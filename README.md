@@ -1,6 +1,6 @@
 # CenterNet
 
-<img src="https://github.com/soumik12345/centernet/workflows/centernet-badge/badge.svg" alt="build-failing">
+<img src="https://github.com/soumik12345/centernet/workflows/centernet-workflow/badge.svg" alt="build-failing">
 
 ## Instructions for Running the CenterNet App
 
