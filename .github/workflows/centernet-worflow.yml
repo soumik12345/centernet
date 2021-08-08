@@ -22,8 +22,10 @@ jobs:
       - uses: actions/checkout@v2
       - run: |
           sh install.sh
-          pip install gdown pytest
-          sh download_data.sh
+          mkdir data && cd data
+          wget https://github.com/soumik12345/centernet/releases/download/0.1/pku-autonomous-driving.zip
+          unzip -q pku-autonomous-driving.zip
+          rm pku-autonomous-driving.zip && cd ..
           source venv/bin/activate
           pytest tests.py -s
           deactivate
