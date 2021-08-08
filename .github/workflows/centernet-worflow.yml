@@ -21,11 +21,13 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: |
-          sh install.sh
+          virtualenv venv --python=python3
+          source venv/bin/activate
+          pip install -r requirements.txt
+          pip install torch==1.9.0+cpu torchvision==0.10.0+cpu torchaudio==0.9.0 -f https://download.pytorch.org/whl/torch_stable.html
           mkdir data && cd data
           wget https://github.com/soumik12345/centernet/releases/download/0.1/pku-autonomous-driving.zip
           unzip -q pku-autonomous-driving.zip
           rm pku-autonomous-driving.zip && cd ..
-          source venv/bin/activate
           pytest tests.py -s
           deactivate
