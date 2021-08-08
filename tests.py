@@ -1,10 +1,13 @@
 import os
+import gc
+import torch
 import numpy as np
 import pandas as pd
 from PIL import Image
 from glob import glob
 from unittest import TestCase
 
+from centernet.model import UNetModel
 from centernet.commons import read_camera_intrinsic
 from centernet.dataloader import Preprocessor, PostProcess
 
@@ -82,3 +85,23 @@ class TestPreProcessor(TestCase):
                 sample_image, sample_prediction_string, flip=True)
             self.assertTrue(mask.shape == (40, 128))
             self.assertTrue(regression_target.shape == (40, 128, 7))
+
+
+class TestUNetModel(TestCase):
+
+    def test_output_shape_efficientnet_b0(self):
+        model = UNetModel(
+            image_height=320, image_width=1024,
+            n_classes=8, efficientnet_alias='b0', pre_trained_backbone=False)
+        self.assertTrue(list(model(torch.ones((1, 3, 320, 1024))).shape) == [1, 8, 40, 128])
+        del model
+        gc.collect()
+    
+    def test_output_shape_efficientnet_b1(self):
+        model = UNetModel(
+            image_height=320, image_width=1024,
+            n_classes=8, efficientnet_alias='b1', pre_trained_backbone=False)
+        x = torch.ones((1, 3, 320, 1024))
+        self.assertTrue(list(model(torch.ones((1, 3, 320, 1024))).shape) == [1, 8, 40, 128])
+        del model
+        gc.collect()

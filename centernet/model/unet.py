@@ -6,13 +6,16 @@ from efficientnet_pytorch import EfficientNet
 from .blocks import DoubleConvolutionBlock, UpSampleBlock
 
 
-class MyUNet(nn.Module):
+class UNetModel(nn.Module):
 
     def __init__(
         self, image_height: int, image_width: int,
-        n_classes: int, efficientnet_alias: str = 'b0'):
-        super(MyUNet, self).__init__()
+        n_classes: int, efficientnet_alias: str = 'b0',
+        pre_trained_backbone: bool = True):
+        super(UNetModel, self).__init__()
         self.base_model = EfficientNet.from_pretrained(
+            'efficientnet-{}'.format(efficientnet_alias)
+        ) if pre_trained_backbone else EfficientNet.from_name(
             'efficientnet-{}'.format(efficientnet_alias)
         )
         self.image_height = image_height
