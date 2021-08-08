@@ -1,0 +1,24 @@
+name: centernet-workflow
+on:
+  push:
+    branches:
+      - master
+      - feature/**
+    paths:
+      - centernet/**
+      - .github/**
+      - tests.py
+  pull_request:
+    branches:
+      - master
+      - feature/**
+    paths:
+      - centernet/**
+      - .github/**
+      - tests.py
+jobs:
+  build-using-cmake-on-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: sh install.sh && sh download_data.sh
