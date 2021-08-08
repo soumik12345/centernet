@@ -26,3 +26,4 @@ jobs:
           sh download_data.sh
           source venv/bin/activate
           pytest tests.py -s
+          deactivate
