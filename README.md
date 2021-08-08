@@ -4,15 +4,8 @@
 
 1. Clone the repository.
 
-2. Install dependencies using:
-    - `virtualenv venv --python=python3`
-    - `source venv/bin/activate`
-    - `pip install -r requirements.txt`
+2. Install dependencies using `sh install.sh`.
    
-3. Download the dataset using:
-    - `mkdir data && cd data`
-    - `gdown https://drive.google.com/uc?id=1jx-5Pp9rVjPHzv9hmbECUvkWDwlk1PlJ`
-    - `unzip pku-autonomous-driving.zip`
-    - `rm pku-autonomous-driving.zip && cd ..`
+3. Download the dataset using: `sh download_data.sh`.
     
 4. Launch the app using `streamlit run app.py`.
