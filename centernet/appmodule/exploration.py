@@ -103,29 +103,29 @@ def _show_images_in_3d(dataframe: pd.DataFrame, n_samples: int, dataset_path: st
 def explore_dataset(dataset_path: str):
     train_dataframe = pd.read_csv(os.path.join(dataset_path, 'train.csv'))
     coordinates_dataframe = get_coordinates_dataframe(dataframe=train_dataframe)
-    with st.beta_expander(label='Train Dataframe', expanded=False):
+    with st.expander(label='Train Dataframe', expanded=False):
         st.dataframe(data=train_dataframe)
     n_samples = st.sidebar.slider(
         'Please select number of samples to visualize',
         min_value=1, max_value=20, value=3
     )
     sampled_dataframe = train_dataframe.sample(n=n_samples)
-    with st.beta_expander(
+    with st.expander(
             label='Sample Train Images', expanded=True):
         _show_car_coordinates(
             copy.deepcopy(sampled_dataframe),
             n_samples=n_samples, dataset_path=dataset_path
         )
-    with st.beta_expander(
+    with st.expander(
             label='Distribution of Cars across the road', expanded=True):
         _show_points_distribution(
             sample_image_id=random.choice(list(train_dataframe['ImageId'])),
             dataframe=train_dataframe, dataset_path=dataset_path
         )
-    with st.beta_expander(
+    with st.expander(
             label='Distribution of Cars across the road from Bird\'s Eye perspective', expanded=True):
         _show_points_distribution_birds_eye(coordinates_dataframe=coordinates_dataframe, road_width=3)
-    with st.beta_expander(
+    with st.expander(
             label='Sample Train Images Annotated in 3D', expanded=True):
         _show_images_in_3d(
             dataframe=sampled_dataframe,

@@ -1,0 +1,32 @@
+name: centernet-workflow
+on:
+  push:
+    branches:
+      - master
+      - feature/**
+    paths:
+      - centernet/**
+      - .github/**
+      - tests.py
+      - requirements.txt
+  pull_request:
+    branches:
+      - master
+    paths:
+      - centernet/**
+      - .github/**
+      - tests.py
+      - requirements.txt
+jobs:
+  test-on-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: |
+          pip install -r requirements.txt
+          pip install torch==1.9.0+cpu torchvision==0.10.0+cpu torchaudio==0.9.0 -f https://download.pytorch.org/whl/torch_stable.html
+          mkdir data && cd data
+          wget https://github.com/soumik12345/centernet/releases/download/0.1/pku-autonomous-driving.zip
+          unzip -q pku-autonomous-driving.zip
+          rm pku-autonomous-driving.zip && cd ..
+          pytest tests.py --disable-pytest-warnings

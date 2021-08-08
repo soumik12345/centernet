@@ -26,8 +26,8 @@ class PostProcess:
         x = coordinates_dataframe[['x', 'z']]
         y = coordinates_dataframe['y']
         self.coordinate_fit.fit(x, y)
-        print('MAE with x:', mean_absolute_error(y, self.coordinate_fit.predict(x)))
-        print('\ndy/dx = {:.3f}\ndy/dz = {:.3f}'.format(*self.coordinate_fit.coef_))
+        # print('MAE with x:', mean_absolute_error(y, self.coordinate_fit.predict(x)))
+        # print('\ndy/dx = {:.3f}\ndy/dz = {:.3f}'.format(*self.coordinate_fit.coef_))
 
     def optimize_xy(self, r, c, x0, y0, z0, flipped=False):
         def distance_fn(xyz):

@@ -32,7 +32,7 @@ def _show_pre_process(dataset_path: str, train_dataframe: pd.DataFrame):
         sample_mask, sample_regression_target = preprocessor.get_targets(
             sample_image, sample_prediction_strings[index], flip=False
         )
-        with st.beta_expander(
+        with st.expander(
                 label='Sample Train Images and Labels: {} '.format(sample_image_id), expanded=True):
             plot_image_matplotlib(
                 image=preprocessor.preprocess_image(
@@ -102,7 +102,7 @@ def data_loader_module(dataset_path: str):
         'Please select number of postprocessor demos',
         min_value=1, max_value=20, value=3
     )
-    with st.beta_expander(label='Postprocessor Demos', expanded=True):
+    with st.expander(label='Postprocessor Demos', expanded=True):
         _show_post_process(
             dataset_path=dataset_path,
             train_dataframe=train_dataframe,
@@ -113,7 +113,7 @@ def data_loader_module(dataset_path: str):
         'Please select number of dataset demos',
         min_value=1, max_value=20, value=3
     )
-    with st.beta_expander(label='Dataset Demos', expanded=True):
+    with st.expander(label='Dataset Demos', expanded=True):
         _show_dataset_demo(
             dataset_path=dataset_path,
             dataframe=train_dataframe,
