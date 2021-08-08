@@ -3,10 +3,12 @@ import numpy as np
 import pandas as pd
 from glob import glob
 from PIL import Image
+from random import sample
+from scipy.sparse.construct import random
 import streamlit as st
 
 from .commons import plot_image_matplotlib
-from ..dataloader import Preprocessor, PostProcess
+from ..dataloader import Preprocessor, PostProcess, PKUDataset
 from ..commons import get_coordinates_dataframe, visualize_in_3d
 
 
@@ -75,6 +77,23 @@ def _show_post_process(
         ), title=sample_image_ids[index])
 
 
+def _show_dataset_demo(dataset_path: str, dataframe: pd.DataFrame, n_samples: int):
+    dataset = PKUDataset(
+        dataframe=dataframe, dataset_path=dataset_path, is_training=True,
+        image_height=320, image_width=1024, model_scale=8
+    )
+    st.markdown('**Dataset Length: {}**'.format(len(dataset)))
+    indices = sample(list(range(len(dataset))), n_samples)
+    for index in indices:
+        image, mask, regression_target = dataset[index]
+        plot_image_matplotlib(
+            np.rollaxis(image, 0, 3), title=str(index))
+        plot_image_matplotlib(
+            mask, title='{}_mask'.format(index))
+        plot_image_matplotlib(
+            regression_target[-2], title='{}_regression_target'.format(index))
+
+
 def data_loader_module(dataset_path: str):
     train_dataframe = pd.read_csv(os.path.join(dataset_path, 'train.csv'))
     coordinates_dataframe = get_coordinates_dataframe(dataframe=train_dataframe)
@@ -88,5 +107,15 @@ def data_loader_module(dataset_path: str):
             dataset_path=dataset_path,
             train_dataframe=train_dataframe,
             coordinate_dataframe=coordinates_dataframe,
+            n_samples=n_samples
+        )
+    n_samples = st.sidebar.slider(
+        'Please select number of dataset demos',
+        min_value=1, max_value=20, value=3
+    )
+    with st.beta_expander(label='Dataset Demos', expanded=True):
+        _show_dataset_demo(
+            dataset_path=dataset_path,
+            dataframe=train_dataframe,
             n_samples=n_samples
         )
