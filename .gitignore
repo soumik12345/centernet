@@ -1,4 +1,5 @@
 venv/
 .idea/
-data/pku-autonomous-driving/
+.vscode/
+data/pku**
 **pycache**
