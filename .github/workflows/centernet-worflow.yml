@@ -8,6 +8,7 @@ on:
       - centernet/**
       - .github/**
       - tests.py
+      - requirements.txt
   pull_request:
     branches:
       - master
@@ -15,6 +16,7 @@ on:
       - centernet/**
       - .github/**
       - tests.py
+      - requirements.txt
 jobs:
   build-using-cmake-on-linux:
     runs-on: ubuntu-latest
