@@ -19,7 +19,7 @@ class Trainer:
         self.model_scale = model_scale
         self.device = torch.device(
             "cuda" if torch.cuda.is_available() else "cpu")
-        self.model, self.optimizer = None, None
+        self.model, self.optimizer, self.learning_rate_scheduler = None, None, None
         self.train_dataloader, self.val_dataloader = None, None
     
     def build_dataloader(
@@ -69,14 +69,43 @@ class Trainer:
         loss = train_criterion(output, masks, regression_targets)
         loss.backward()
         self.optimizer.step()
+        self.learning_rate_scheduler.step()
         return loss
     
-    def train(self, epochs: int = 10):
-        learning_rate_scheduler = lr_scheduler.StepLR(
+    def training_episode(self):
+        epoch_loss = 0
+        for batch_index, data in enumerate(tqdm(self.train_dataloader)):
+            images, masks, regression_targets = data
+            epoch_loss += self._train_step(
+                batch_index, images,
+                masks, regression_targets
+            ).data
+        epoch_loss /= len(self.train_dataloader.dataset)
+        return epoch_loss
+    
+    def evaluation_episode(self):
+        self.model.eval()
+        epoch_loss = 0
+        with torch.no_grad():
+            for data in tqdm(self.val_dataloader):
+                images, masks, regression_targets = data
+                images = images.to(self.device)
+                masks = masks.to(self.device)
+                regression_targets = regression_targets.to(self.device)
+                output = self.model(images)
+                epoch_loss += train_criterion(
+                    output, masks,
+                    regression_targets, size_average=False
+                ).data
+        epoch_loss /= len(self.val_dataloader.dataset)
+        return epoch_loss
+    
+    def train_and_evaluate(self, epochs: int = 10):
+        self.learning_rate_scheduler = lr_scheduler.StepLR(
             self.optimizer, gamma=0.1,
             step_size=max(epochs, 10) * len(self.train_dataloader) // 3
         )
         self.model.train()
-        for batch_index, data in enumerate(tqdm(self.train_dataloader)):
-            images, masks, regression_targets = data
-            loss = self._train_step(batch_index, images, masks, regression_targets)
+        for epoch in range(1, epochs + 1):
+            self.training_episode()
+            self.evaluation_episode()
